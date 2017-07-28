@@ -53,13 +53,13 @@ timeStamp = time.strftime("%Y%m%d%H%M%S", time.localtime(int(time.time())))
 print(("Loading data..."))
 
 
-vocab = insurance_qa_data_helpers.build_vocab()
+vocab = insurance_qa_data_helpers.build_vocab() # vocab = {word: id}
 # embeddings =insurance_qa_data_helpers.load_vectors(vocab)
-alist = insurance_qa_data_helpers.read_alist()
-raw = insurance_qa_data_helpers.read_raw()
+alist = insurance_qa_data_helpers.read_alist()  # only candidate answers in text format
+raw = insurance_qa_data_helpers.read_raw()      # list with item a sample list split with ' '
 
 
-test1List = insurance_qa_data_helpers.loadTestSet("test1")
+test1List = insurance_qa_data_helpers.loadTestSet("test1") # list with item a test sample
 test2List= insurance_qa_data_helpers.loadTestSet("test2")
 devList= insurance_qa_data_helpers.loadTestSet("dev")
 testSet=[("test1",test1List),("test2",test2List),("dev",devList)]
@@ -98,7 +98,7 @@ def generate_gan(sess, model,loss_type="pair",negative_size=3):
 		sampled_index=np.random.choice(neg_alist_index,size=[FLAGS.pools_size],replace= False)
 		pools=np.array(alist)[sampled_index]
 
-		canditates=insurance_qa_data_helpers.loadCandidateSamples(q,a,pools,vocab)	
+		canditates=insurance_qa_data_helpers.loadCandidateSamples(q,a,pools,vocab) # list with item [q, a, neg] in the form of id
 		predicteds=[]
 		for batch in insurance_qa_data_helpers.batch_iter(canditates,batch_size=FLAGS.batch_size):							
 			feed_dict = {model.input_x_1: batch[:,0],model.input_x_2: batch[:,1],model.input_x_3: batch[:,2]}			
@@ -118,7 +118,7 @@ def generate_gan(sess, model,loss_type="pair",negative_size=3):
 @log_time_delta	 
 def dev_step(sess,cnn,testList,dev_size=100):
 	scoreList = []
-	if dev_size>len(testList)/500:
+	if dev_size>len(testList)/500: # every 500 samples in test set is a test sample
 		dev_size=len(testList)/500
 		print( "have test %d samples" % dev_size)
 	for i in range(dev_size):
