@@ -15,10 +15,10 @@ class Discriminator(QACNN):
     
         with tf.name_scope("output"):
 
-            self.losses = tf.maximum(0.0, tf.sub(0.05, tf.sub(self.score12, self.score13)))
+            self.losses = tf.maximum(0.0, tf.subtract(0.05, tf.subtract(self.score12, self.score13)))
             self.loss = tf.reduce_sum(self.losses) + self.l2_reg_lambda * self.l2_loss
             
-            self.reward = 2.0*(tf.sigmoid(tf.sub(0.05, tf.sub(self.score12, self.score13))) -0.5) # no log
+            self.reward = 2.0*(tf.sigmoid(tf.subtract(0.05, tf.subtract(self.score12, self.score13))) -0.5) # no log
             self.positive= tf.reduce_mean(self.score12)
             self.negative= tf.reduce_mean( self.score13)
 

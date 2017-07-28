@@ -98,16 +98,16 @@ class QACNN():
                 name="poll-1"
             )
             output.append(pooled)
-        pooled_reshape = tf.reshape(tf.concat(3, output), [-1, self.num_filters_total]) 
+        pooled_reshape = tf.reshape(tf.concat(output, 3), [-1, self.num_filters_total]) 
         pooled_flat = tf.nn.dropout(pooled_reshape, self.dropout_keep_prob)
         return pooled_flat
     def cosine(self,q,a):
 
-        pooled_len_1 = tf.sqrt(tf.reduce_sum(tf.mul(q, q), 1)) 
-        pooled_len_2 = tf.sqrt(tf.reduce_sum(tf.mul(a, a), 1))
+        pooled_len_1 = tf.sqrt(tf.reduce_sum(tf.multiply(q, q), 1)) 
+        pooled_len_2 = tf.sqrt(tf.reduce_sum(tf.multiply(a, a), 1))
 
-        pooled_mul_12 = tf.reduce_sum(tf.mul(q, a), 1) 
-        score = tf.div(pooled_mul_12, tf.mul(pooled_len_1, pooled_len_2)+1e-8, name="scores") 
+        pooled_mul_12 = tf.reduce_sum(tf.multiply(q, a), 1) 
+        score = tf.div(pooled_mul_12, tf.multiply(pooled_len_1, pooled_len_2)+1e-8, name="scores") 
         return score 
       
     
